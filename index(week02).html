@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="ko">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <!-- JQuery를 import 합니다 -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <title>머그잔 | 컵 스토어</title>
+    <link href="https://fonts.googleapis.com/css2?family=Gamja+Flower&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Gamja Flower', cursive;
+        }
+
+        .myitem {
+            width: 500px;
+            height: 300px;
+            background-image: url("https://cdn.pixabay.com/photo/2017/01/23/14/42/mugs-2002804_960_720.jpg");
+            background-position: center;
+            background-size: cover;
+        }
+
+        .price {
+            font-size: 16px;
+        }
+
+        .desc {
+            width: 500px;
+            margin-top: 20px;
+            margin-bottom: 20px;
+
+        }
+
+        .order-box {
+            width: 500px;
+        }
+
+        .mybtn {
+            width: 100px;
+            margin: auto;
+            display: block;
+        }
+
+        .wrap {
+            margin: auto;
+            width: 500px;
+        }
+
+        .rate {
+            color: blue;
+        }
+    </style>
+</head>
+
+<body>
+<div class="wrap">
+    <div class="myitem"></div>
+    <div class="desc">
+        <h1>도자기 머그컵(2+1)<span class="price">가격: 9,900원/개</span></h1>
+        <p>마모성과 내구성이 좋아 충격에 강하며 전자레인지 식기세척기 사용가능한 실용성이 좋은 도자기 머그컵</p>
+
+        <p class="rate">달러-원 환율: <span id="rate-box"></span></p>
+    </div>
+    <div class="order-box">
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="inputGroup-sizing-default">성함</span>
+            </div>
+            <input id="order-name" type="text" class="form-control" aria-label="Default"
+                   aria-describedby="inputGroup-sizing-default">
+        </div>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <label class="input-group-text" for="order-count">수량</label>
+            </div>
+            <select id="order-count" class="custom-select">
+                <option selected>-- 수량을 선택하세요(최대 주문 수량: 6) --</option>
+                <option value="2">2</option>
+                <option value="4">4</option>
+                <option value="6">6</option>
+            </select>
+        </div>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="inputGroup-sizing-default02">배송지</span>
+            </div>
+            <input id="order-address" type="text" class="form-control" aria-label="Default"
+                   aria-describedby="inputGroup-sizing-default">
+        </div>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="inputGroup-sizing-default03">전화번호</span>
+            </div>
+            <input id="order-phone" type="text" class="form-control" aria-label="Default"
+                   aria-describedby="inputGroup-sizing-default">
+        </div>
+        <button onclick="order()" type="button" class="btn btn-primary mybtn">주문하기</button>
+    </div>
+
+</div>
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            type: "GET",
+            url: "https://api.manana.kr/exchange/rate.json",
+            data: {}, //
+            success: function (response) {
+                console.log(response)
+                let nowrate = response[1]['rate']
+                $('#rate-box').text(nowrate)
+            }
+        })
+    });
+
+    function order() {
+        let name = $('#order-name').val()
+        let count = $('#order-count').val()
+        let address = $('#order-address').val()
+        let phone = $('#order-phone').val()
+
+        if (name === '') {
+            alert('이름을 입력하세요')
+            return;
+        } else if (count === '-- 수량을 선택하세요(최대 주문 수량: 6) --') {
+            alert('수량을 입력하세요')
+            return;
+        } else if (address === '') {
+            alert('주소를 입력하세요')
+            return;
+        } else if (phone === '') {
+            alert('전화번호를 입력하세요')
+            return;
+        }
+        alert('주문이 완료되었습니다')
+    }
+</script>
+</body>
+</html>
